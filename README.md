@@ -1,5 +1,5 @@
 # Guitar Hero Clone Game
-This project is a student-led project that combines our skills & interests to produce a playable experience modelled after the hit game Guitar Hero.
+This is a student-led project that combines our skills & interests to produce a playable experience modelled after the hit game Guitar Hero.
 
 It uses:
 - Python & PyGame for the playable game experience
