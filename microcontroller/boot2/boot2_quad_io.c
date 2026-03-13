@@ -80,6 +80,8 @@ void boot_stage_2(void)
                         | (QSPI_ADDR_LEN << 2);
     XIP_SSI_SSIENR = 1;
 
+    while(1);
+
     // load SP & call reset handler using vector table
     M0PLUS_VTOR = VECTOR_TABLE_BASE;
     

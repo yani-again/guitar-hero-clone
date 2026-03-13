@@ -11,7 +11,7 @@
 // NOTE: the RP2040 uses the CRC32 MPEG2 standard
 int main(int argc, char *argv[])
 {
-    char data[BOOT2_LEN + 1] = {0};
+    uint8_t data[BOOT2_LEN + 1] = {0};
     uint32_t crc = 0xFFFFFFFF;
     FILE *p_file;
 
@@ -30,12 +30,13 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    if (fgets(data, BOOT2_LEN + 1, p_file) == NULL)
-    {
-        printf("error while reading %s\n", argv[1]);
-        fclose(p_file);
-        exit(1);
-    }
+    fread(data, 1, BOOT2_LEN, p_file);
+    // if (fgets(data, BOOT2_LEN + 1, p_file) == NULL)
+    // {
+    //     printf("error while reading %s\n", argv[1]);
+    //     fclose(p_file);
+    //     exit(1);
+    // }
     fclose(p_file);
 
     for (int i = 0; i < BOOT2_LEN; ++i)

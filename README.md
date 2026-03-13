@@ -48,6 +48,7 @@ These are the sources I references a lot while programming this:
 - [Universal Serial Bus Specification](https://wcours.gel.ulaval.ca/GIF1001/old/h20/docs/USB_20.pdf)
 - [USB - Device Class Definition for Human Interface Devices (HID)](https://www.usb.org/sites/default/files/hid1_11.pdf)
 - [YouTube: Error Detection and Correction 2: Cyclic Redundancy Check](https://www.youtube.com/watch?v=6gbkoFciryA)
+- [USB-IF class codes](https://www.usb.org/defined-class-codes)
 #### Other Repositories
 - [vxj9800/bareMetalRP2040](https://github.com/vxj9800/bareMetalRP2040)
 - [carlosftm/RPi-Pico-Baremetal](https://github.com/carlosftm/RPi-Pico-Baremetal)
