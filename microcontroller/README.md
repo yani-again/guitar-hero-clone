@@ -6,13 +6,12 @@ Low-level USB device drivers for HID devices using the RP2040, implemented with 
 
 The goal of RaspberryUSB is to be an abstraction layer between the hardware and software, allowing for a plug-and-play implementation of the USB protocol without reliance on bloated libraries.
 
-As it's HID-focused, this means implementation is only supported for HID devices (e.g. keyboard, mouse, gamepad).
+Since it's HID-focused, this means implementation is only supported for HID devices (e.g. keyboard, mouse, gamepad).
 
-Taking a page out of  book, this is also a memory-safe implementation (no dynamic memory allocation).
 As an unintended side-effect of the minimal approach, this is also a memory-safe USB implementation (no `malloc`)
 
 ## Motivation
-Since the RP2040 is very limited on resources, the general functionality provided by libraries like [TinyUSB](https://github.com/hathach/tinyusb) can become noticeably bloated. While excellent production tools, they are (by nature) not as lean as some projects demand.
+Because the RP2040 is very limited on resources, the general functionality provided by libraries like [TinyUSB](https://github.com/hathach/tinyusb) can become noticeably bloated. While excellent production tools, they are (by nature) not as lean as some projects demand.
 
 This is where RasberryUSB fits in.
 
@@ -51,7 +50,32 @@ RaspberryUSB tries its best to expose the inner workings of USB just enough to r
 
 ### Important Functions
 ```c
-// TODO: complete once a working version is released
+// same process for all descriptors
+struct raspberryusb_device_descriptor device_descriptor = generate_device_descriptor();
+
+device_descriptor.vendor_id  =  0x1234;
+device_descriptor.product_id =  0x5678;
+device_descriptor.device_type = DEVICE_DESCRIPTOR_KEYBOARD;
+
+
+// initialisation & (automatic) enumeration
+initialise_single_device(device_descriptor, ...);
+
+// or
+initialise_composite_device(struct raspberryusb_device_descriptor* device_descriptors);
+
+
+// receiving data (defining interrupts)
+// using function define_receive_isr(void (*isr)(void), int index)
+void receive_isr_1(void);
+void receive_isr_2(void);
+
+define_receive_isr(receive_isr_1, 0);
+define_receive_isr(receive_isr_2, 1);
+
+
+// sending data
+// TODO: uncertain how this will work yet
 ```
 
 ### Keyboard Enumeration Example
@@ -97,16 +121,16 @@ High-level overview of the driver's role in context to hardware/application laye
 
 ## Architecture
 ```
-┌─── usb\_descriptors.c
+┌─── usb_descriptors.c
 │    all descriptors
 │
-├─── usb\_hw.c
+├─── usb_hw.c
 │    USB controller interaction
 │
-├─── usb\_ep.c
+├─── usb_ep.c
 │    endpoint configuration and buffer management
 │
-├─── usb\_control.c
+├─── usb_control.c
 │    control transfer handling
 │
 └─── usb.c
