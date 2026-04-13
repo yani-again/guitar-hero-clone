@@ -1,3 +1,7 @@
+#this is the main python file
+#i havnt uploaded the audio mp3 files here and game wont run without
+
+
 
 import pygame
 import sys
