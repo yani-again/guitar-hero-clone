@@ -4,7 +4,7 @@ This was supposed to be the easiest among the three languages, but pride would n
 
 ## The Eureka Moment: Serial Emulation
 
-Instead of a standard plug-and-play controller, I programmed the Pico to mimic an HID device by sending raw data over the USB Serial port. By using sys.stdout.buffer.write(), I could bypass standard debugging text and send a pure, high-speed stream of button data directly to a custom reader on the PC. A solution that felt like a true Eureka moment.
+Instead of a standard plug-and-play controller, I programmed the Pico to mimic an HID device by sending raw data over the USB Serial port. By using `sys.stdout.buffer.write()`, I could bypass standard debugging text and send a pure, high-speed stream of button data directly to a custom reader on the PC. A solution that felt like a true Eureka moment.
 
 ## How it Works
 
@@ -13,19 +13,21 @@ Instead of a standard plug-and-play controller, I programmed the Pico to mimic a
 * The Hardware Setup: The Pico uses its internal pull-up resistors for all 6 buttons. 
 * An unpressed button reads as 1 and a pressed one as 0. 
 * Bitmasking: To keep communication efficient, I pack the state of every button into a single 8-bit byte. 
-* For example, hitting the Strum and Note 1 and Note 3 creates a bitmask of 0x85. 
+* For example, hitting the Strum and Note 1 and Note 3 creates a bitmask of `0x85`. 
 * The Heartbeat: Every 500ms, the Pico sends a heartbeat signal. 
 * This prevents the PC from getting stuck thinking a button is held down if a single data packet is missed. 
 
-### 2. The PC-Side (guitar_reader.py)
+### 2. The PC-Side (pc_reader.py)
 
 DISCLAIMER: A lot of AI was used here because it was simply out of my bounds, so I cannot personally assure perfect efficiency.
 
 Since the PC sees a serial port rather than a gamepad, I wrote a Python script using pyserial and threading to translate that data:
 
-* Auto-Detect: The script scans COM ports to find the Pico specific Vendor ID (0x2E8A). 
+* Auto-Detect: The script scans COM ports to find the Pico specific Vendor ID (`0x2E8A`). 
 * Background Listening: I used a background thread so the reader constantly listens for the Pico without blocking the main game loop. 
-* The Lock: To prevent data corruption, I implemented a Lock system so the game loop and the serial reader never try to update the button state at the exact same millisecond. 
+* The Lock: To prevent data corruption, I implemented a Lock system so the game loop and the serial reader never try to update the button state at the exact same millisecond.
+
+(This part of the code can be 100% avoided by omiting the `sys` module specificly the `sys.stdout.buffer.write()` line from code.py and instead be replaced with print() statement, but that limits the program to be terminal based).
 
 ## The Debounce Dilemma
 
