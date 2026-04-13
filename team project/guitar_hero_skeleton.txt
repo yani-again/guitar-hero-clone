@@ -1,0 +1,57 @@
+
+import pygame
+import sys
+pygame.init()
+
+#window initialisation
+background_colour = ('#FFFFFF')
+width = 640
+height = 480
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption('Guitar Hero')
+screen.fill(background_colour)
+
+#text customise
+smallfont = pygame.font.SysFont('Pixel',50)
+colour ='#000000'
+
+#temporary text screen indicators
+menu = smallfont.render('Guitar' , True , 'Red')
+song_select = smallfont.render('Song Selection', True, 'Red')
+game_screen = smallfont.render('game screen', True, 'Red')
+#game_over
+button = pygame.Rect(100, 100, 100, 50)
+#x, y, width, height
+
+#clock initialise
+clock = pygame.time.Clock()
+
+
+#run loop
+run = True
+screen.fill(background_colour)
+screen.blit(menu , (width/2-50,height/2-30)) 
+pygame.draw.rect(screen, 'Red', button)
+
+#program loop
+while run:
+  
+  for event in pygame.event.get():
+    #program exit
+    if event.type == pygame.QUIT:
+      run = False
+      pygame.quit()
+    
+    #detects mouse button down
+    if event.type == pygame.MOUSEBUTTONDOWN:
+      #mouse position on screen
+      mouse = event.pos
+      #checks mouse press is on button
+      if button.collidepoint(mouse):
+        #
+        screen.fill(background_colour)
+        screen.blit(song_select, (width/2-50, height/2-30))
+    
+    #updates display screen every loop
+    pygame.display.update()
+    clock.tick(60)
